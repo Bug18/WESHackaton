@@ -34,7 +34,7 @@ ISR(TIMER1_CAPT_vect){
         delta = current_time - last_time_read;
 
         if(past_delta * 1.5 < delta){       //end of cycle
-            past_delta_sum = delta_sum;
+            past_delta_sum = delta_sum + delta;
             
             delta_sum = 0;                  // NGL fix
             past_delta = 0;
