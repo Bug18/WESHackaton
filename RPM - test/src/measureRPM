@@ -1,0 +1,67 @@
+#include <Arduino.h>
+
+uint32_t past_delta;
+uint32_t delta;
+
+uint32_t past_delta_sum;
+uint32_t delta_sum;
+
+bool firstRisingPassed;
+uint32_t start_time;
+
+ISR(TIMER1_CAPT_vect)
+{
+    if (TCCR1B & _BV(ICES1)){                   // RISING
+        if(!firstRisingPassed){
+            start_time = millis();
+        } else {
+            past_delta = delta;
+            delta = millis() - start_time;
+
+            if(past_delta * 1.5 < delta){       //end of cycle
+                past_delta_sum = delta_sum;
+                delta_sum = 0;                  // NGL fix
+            } else {
+                delta_sum += delta;
+            }
+        }
+        firstRisingPassed = !firstRisingPassed;
+    }
+
+    TCCR1B |= _BV(ICES1);
+}
+
+void initRPMTimer() {
+    noInterrupts ();  // protected code
+
+    // reset Timer 1
+    TCCR1A = 0;
+    TCCR1B = 0;
+    TCNT1 = 0;
+    TIMSK1 = 0;
+
+    TIFR1 |= _BV(ICF1); // clear Input Capture Flag so we don't get a bogus interrupt
+
+    TCCR1B = _BV(CS10) | // start Timer 1, no prescaler
+            _BV(ICES1); // Input Capture Edge Select (1=Rising, 0=Falling)
+
+    TIMSK1 |= _BV(ICIE1); // Enable Timer 1 Input Capture Interrupt
+    
+    past_delta = 0;
+    delta = 0;
+
+    past_delta_sum = 0;
+    delta_sum = 0;
+
+    firstRisingPassed = false;
+    
+    interrupts ();
+}
+
+uint32_t getRPM(){
+    noInterrupts();
+    uint32_t retVal = 60.0f / ( (float)past_delta_sum / 1000 );
+    interrupts();
+
+    return retVal;
+}
