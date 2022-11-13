@@ -3,7 +3,7 @@
 
 #include <Arduino.h>
 
-#define pinMAP 9
+#define pinMAP A0
 // #define DEBUG
 // #define TEST
 

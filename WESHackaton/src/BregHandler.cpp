@@ -3,15 +3,16 @@
 
 #include <Arduino.h>
 
-bool bregChecked = false;
-bool bregExists = false;
+volatile bool bregChecked = false;
+volatile bool bregExists = false;
 
 void setupBreg(){
-    attachInterrupt(BREG_PIN, bregTriggered, HIGH);
+    attachInterrupt(digitalPinToInterrupt(BREG_PIN), bregTriggered, RISING);
 }
 
 void bregTriggered(){
     bregChecked = true;
     bregExists = true;
-    zubac_cnt = -2;
+    treashold = 0;
+    zubac_count = -2;
 }

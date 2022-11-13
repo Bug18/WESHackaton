@@ -3,8 +3,9 @@
 
 #define BREG_PIN 3
 
-extern bool bregChecked;
-extern bool bregExists;
+extern volatile bool bregChecked;
+extern volatile bool bregExists;
+extern int ZubacCntBreg;
 
 void setupBreg();
 void bregTriggered();
