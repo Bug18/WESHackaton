@@ -13,6 +13,8 @@ int zubac_cnt = 0;
 bool toothless = false;
 int rotationNumber = 0;
 
+bool armedForSpark = false;
+
 volatile uint16_t Overflows = 0;
 
 ISR(TIMER1_OVF_vect)
@@ -63,8 +65,23 @@ ISR(TIMER1_CAPT_vect){
             zubac_cnt += 1;
         }
 
-        zubac_cnt = zubac_cnt % 24;
-        rotationNumber++;
+        if(zubac_cnt >= 24){
+            zubac_cnt = zubac_cnt & 24;
+
+            if(bregExists && rotationNumber == 1){
+                if(rotationNumber == 1){
+                    armedForSpark = true;
+                
+                    rotationNumber = 0;
+                    bregExists = false;
+                }else {
+                    rotationNumber++;
+                }
+            } else {
+                rotationNumber = 0;
+                armedForSpark = true;
+            }
+        }
     }
 }
 

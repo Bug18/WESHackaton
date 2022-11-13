@@ -13,6 +13,8 @@ extern int zubac_cnt;
 extern bool toothless;
 extern int rotationNumber;
 
+extern bool armedForSpark;
+
 extern volatile uint16_t Overflows;
 
 ISR(TIMER1_OVF_vect);

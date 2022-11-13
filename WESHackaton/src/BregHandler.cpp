@@ -4,6 +4,7 @@
 #include <Arduino.h>
 
 bool bregChecked = false;
+bool bregExists = false;
 
 void setupBreg(){
     attachInterrupt(BREG_PIN, bregTriggered, HIGH);
@@ -11,5 +12,6 @@ void setupBreg(){
 
 void bregTriggered(){
     bregChecked = true;
+    bregExists = true;
     zubac_cnt = -2;
 }
