@@ -11,6 +11,7 @@ extern uint32_t delta_sum;
 
 extern int zubac_cnt;
 extern bool toothless;
+extern int rotationNumber;
 
 extern volatile uint16_t Overflows;
 

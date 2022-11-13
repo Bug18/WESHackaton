@@ -11,6 +11,7 @@ uint32_t delta_sum;
 
 int zubac_cnt = 0;
 bool toothless = false;
+int rotationNumber = 0;
 
 volatile uint16_t Overflows = 0;
 
@@ -63,6 +64,7 @@ ISR(TIMER1_CAPT_vect){
         }
 
         zubac_cnt = zubac_cnt % 24;
+        rotationNumber++;
     }
 }
 
