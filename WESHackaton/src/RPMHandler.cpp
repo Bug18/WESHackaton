@@ -12,7 +12,7 @@ uint32_t delta_sum;
 int zubac_cnt = 0;
 bool toothless = false;
 int rotationNumber = 0;
-
+bool rotationState = false;
 bool armedForSpark = false;
 
 volatile uint16_t Overflows = 0;
@@ -53,31 +53,32 @@ ISR(TIMER1_CAPT_vect){
             delta_sum += delta;
         }
     }
+    
     last_time_read = overflows;
     last_time_read = (last_time_read << 16) | ICR1;
     
     firstRisingPassed = true;
 
-    if(bregChecked){
-        if(toothless){
+    if(bregChecked){  // provijeri je li proso kalibracijski brijeg
+        if(toothless){  // provijeri je li trenutni uzlazni brid dolazi nakon rupe koljenstog vratila
             zubac_cnt += 3;
+            zubac_cnt = zubac_cnt % 24;
+            
+            
+            if(!rotationState) rotationState = true;
+            else rotationState = false;
+        
         } else {
             zubac_cnt += 1;
         }
 
-        if(zubac_cnt >= 24){
-            zubac_cnt = zubac_cnt & 24;
+        toothless = false;
 
-            if(bregExists && rotationNumber == 1){
-                if(rotationNumber == 1){
-                    armedForSpark = true;
-                
-                    rotationNumber = 0;
-                    bregExists = false;
-                }else {
-                    rotationNumber++;
-                }
-            } else {
+        if(zubac_cnt == 1){
+            if(bregExists && rotationState == false){
+                armedForSpark = true;
+                bregExists = false;
+            } else if(!bregExists && rotationState == true) {
                 rotationNumber = 0;
                 armedForSpark = true;
             }
@@ -117,7 +118,7 @@ float getRPM(){
     if(past_delta_sum == 0)
       retVal = 0;
     else
-      retVal = 60.0 / ((past_delta_sum / 16.0) / 1000000);
+      retVal = 60.0 / ((past_delta * 24 / 16.0) / 1000000);
 
     interrupts();
 
