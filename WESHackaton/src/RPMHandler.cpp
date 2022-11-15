@@ -3,11 +3,12 @@
 #include "BregHandler.h"
 #include "BobHandler.h"
 
-int zubac_count = 0;
-bool is_toothless = false;
-bool is_on_first_rotation = false;
-int treashold = 0;
-bool firstBreg = true;
+int zubac_count            = 0;
+bool is_toothless          = false;
+bool is_on_first_rotation  = false;
+int treashold              = 0;
+bool firstBreg             = true;
+
 float precalculatedDelay;
 
 volatile uint16_t timer_overflow = 0;

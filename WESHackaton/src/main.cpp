@@ -5,6 +5,7 @@
 
 void setup() {
 	pinMode(B_OUT, OUTPUT);
+	
 	setupRPMTimer();
 	setupBreg();
 }

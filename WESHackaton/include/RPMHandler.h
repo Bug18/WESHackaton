@@ -5,9 +5,9 @@
 
 #define B_OUT 11  // pin 11 -> izlazni pin za upravljanje bobinom
 
-#define ZUBAC_ANGLE 15.0
+#define ZUBAC_ANGLE  15.0
 #define ZUBAC1_ANGLE 195.0
-#define INC_DELAY 124
+#define INC_DELAY    124
 
 extern uint32_t past_delta;
 extern uint32_t delta;

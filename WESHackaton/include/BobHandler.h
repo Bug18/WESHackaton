@@ -13,7 +13,7 @@ template <typename T>
 int getIndex(T array[], int size, T target);
 
 #define PRESSURES_COUNT 10
-#define RPMS_COUNT 11
+#define RPMS_COUNT      11
 
 extern int PRESSURES[PRESSURES_COUNT];
 extern int RPMS[RPMS_COUNT];
